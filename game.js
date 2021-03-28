@@ -78,26 +78,28 @@ var graph = {
     "wes": ["gol", "spa", "mid", "naf", "tun", "tyn"]
 };
 
+function getProv(id) {
+    return document.getElementById("map").getSVGDocument().getElementById(id);
+}
+
 function getProvType(prov) {
-    var obj = document.getElementById(prov);
+    var obj = getProv(prov);
     if (obj.classList[0] == "sea") return "sea";
     if (obj.getElementsByTagName("use").length == 1) return "inland";
     return "coast";
 }
 function getProvName(prov) {
-    return document.getElementById(prov).getElementsByTagName("text")[0].textContent;
+    return getProv(prov).getElementsByTagName("text")[0].textContent;
 }
 function getUnitType(unit) {
-    console.log(unit);
-    //var possibleUnits = document.getElementById(unit).getElementsByTagName("use");
-    var possibleUnits = top.getElementById(unit).getElementsByTagName("use");
+    var possibleUnits = getProv(unit).getElementsByTagName("use");
     for (let i = 0; i < possibleUnits.length; ++i) {
         if (!possibleUnits[i].classList.contains("emp")) return possibleUnits[i].classList[0];
     }
     return "";
 }
 function getUnitLoc(unit) { // Must have two coasts
-    var possibleUnits = document.getElementById(unit).getElementsByTagName("use");
+    var possibleUnits = getProv(unit).getElementsByTagName("use");
     for (let i = 0; i < possibleUnits.length; ++i) {
         if (!possibleUnits[i].classList.contains("emp")) return possibleUnits[i].classList[1];
     }
