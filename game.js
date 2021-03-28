@@ -89,7 +89,8 @@ function getProvName(prov) {
 }
 function getUnitType(unit) {
     console.log(unit);
-    var possibleUnits = document.getElementById(unit).getElementsByTagName("use");
+    //var possibleUnits = document.getElementById(unit).getElementsByTagName("use");
+    var possibleUnits = top.getElementById(unit).getElementsByTagName("use");
     for (let i = 0; i < possibleUnits.length; ++i) {
         if (!possibleUnits[i].classList.contains("emp")) return possibleUnits[i].classList[0];
     }
