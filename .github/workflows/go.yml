@@ -19,7 +19,7 @@ jobs:
         go-version: 1.15
 
     - name: Build
-      run: go build -v ./golang/test.go -o solver
+      run: go build ./golang/solver.go
 
     - name: Test
       run: go test -v ./golang/...
