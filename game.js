@@ -399,42 +399,35 @@ function sendOrders() {
     var orders = document.getElementById("orders").getElementsByClassName("order");
     var ansatz1 = /[AF]\s+(\w{3})\s+([-HSC])\s?([^]*)/;
     var ansatz2 = /[AF]\s+(\w{3})\s+([-H])\s?(\w*)/;
-    var ret = {};
+    var ret = [];
     for (let i = 0; i < orders.length; ++i) {
         let order = orders[i].textContent;
         let parsed1 = ansatz1.exec(order);
-        let unit = parsed1[1].toLowerCase();
+        ret[i] = [parsed1[1].toLowerCase()];
         let method = parsed1[2];
         switch (method) {
             case "-": {
-                let obj = parsed1[3].toLowerCase();
-                ret[unit] = {"-": obj};
+                ret[i].push(parsed1[3].toLowerCase());
                 break;
             }
             case "H": {
-                ret[unit] = {"H": ""};
+                ret[i].push(method);
                 break;
             }
             case "S": {
+                ret[i].push(method);
                 let supOrder = ansatz2.exec(parsed1[3]);
-                let receiver = supOrder[1].toLowerCase();
+                ret[i].push(supOrder[1].toLowerCase());
                 let supMethod = supOrder[2];
-                if (supMethod == "-") {
-                    let supObj = supOrder[3].toLowerCase();
-                    let obj = new Object();
-                    obj[receiver] = {"-": supObj};
-                    ret[unit] = {"S": obj};
-                }
-                else ret[unit] = {"S": {receiver: {"H": ""}}};
+                if (supMethod == "-") ret[i].push(supOrder[3].toLowerCase());
+                else ret[i].push(supMethod);
                 break;
             }
             case "C": {
+                ret[i].push(method);
                 let conOrder = ansatz2.exec(parsed1[3]);
-                let receiver = conOrder[1].toLowerCase();
-                let conObj = conOrder[3].toLowerCase();
-                let obj = new Object();
-                obj[receiver] = {"-": conObj};
-                ret[unit] = {"C": obj};
+                ret[i].push(conOrder[1].toLowerCase());
+                ret[i].push(conOrder[3].toLowerCase());
                 break;
             }
         }
@@ -445,11 +438,10 @@ function sendOrders() {
     xmlhttp.onreadystatechange = function() {
         document.getElementById("result").innerHTML = "傳送中";
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            //document.getElementById("result").innerHTML = xmlhttp.responseText;
             document.getElementById("result").innerHTML = "傳送成功";
         }
     }
-    xmlhttp.open("POST", "solver.php", true);
+    xmlhttp.open("POST", "http://localhost:8080/", true);
     xmlhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
     xmlhttp.send(JSON.stringify(ret));
 }
