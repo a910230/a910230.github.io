@@ -439,6 +439,7 @@ function sendOrders() {
         document.getElementById("result").innerHTML = "傳送中";
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             document.getElementById("result").innerHTML = "傳送成功";
+            document.getElementById("result").innerHTML += xmlhttp.responseText;
         }
     }
     xmlhttp.open("POST", "https://diplomacy.guru/", true);
