@@ -441,7 +441,7 @@ function sendOrders() {
             document.getElementById("result").innerHTML = "傳送成功";
         }
     }
-    xmlhttp.open("POST", "http://3.131.89.55/", true);
+    xmlhttp.open("POST", "https://diplomacy.guru/", true);
     xmlhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
     xmlhttp.send(JSON.stringify(ret));
 }
